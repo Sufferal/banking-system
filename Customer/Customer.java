@@ -26,13 +26,11 @@ public class Customer {
   }
 
   public int getCustomerId() { return this.customerId; }
-
   public void addAccount(Account account) {
-    accounts.add(account);
+    this.accounts.add(account);
   }
-
   public List<Account> getAccounts() {
-    return accounts;
+    return this.accounts;
   }
 
   // Factory method to create a customer from user input

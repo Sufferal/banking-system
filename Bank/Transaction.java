@@ -1,19 +1,21 @@
 package Bank;
 import Account.*;
 
+import java.time.Instant;
+
 public class Transaction {
   private int transactionId;
-  private Account fromAccount;
-  private Account toAccount;
+  private int fromAccountNumber;
+  private int toAccountNumber;
   private double amount;
-  private String currency;
-  private String timestamp;
+  private Currency currency;
+  private Instant timestamp;
 
-  public Transaction(int transactionId, Account fromAccountId, Account toAccountId,
-                     double amount, String currency, String timestamp) {
+  public Transaction(int transactionId, int fromAccountNumber, int toAccountNumber,
+                     double amount, Currency currency, Instant timestamp) {
     this.transactionId = transactionId;
-    this.fromAccount = fromAccountId;
-    this.toAccount = toAccountId;
+    this.fromAccountNumber = fromAccountNumber;
+    this.toAccountNumber = toAccountNumber;
     this.amount = amount;
     this.currency = currency;
     this.timestamp = timestamp;
@@ -21,7 +23,7 @@ public class Transaction {
 
   @Override
   public String toString() {
-    return "(Transaction) #" + transactionId + " from Account #" + fromAccount + " to Account #" + toAccount +
+    return "(Transaction) #" + transactionId + " from Account #" + fromAccountNumber + " to Account #" + toAccountNumber +
         ": " + amount + " " + currency + " at " + timestamp;
   }
 }

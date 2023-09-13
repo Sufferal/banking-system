@@ -12,7 +12,7 @@ public class Bank {
 
   public Bank(String name) {
     this.name = name;
-    this.customers = new ArrayList<Customer>();
+    this.customers = new ArrayList<>();
   }
 
   public void addCustomer(Customer customer) {
@@ -31,17 +31,33 @@ public class Bank {
 
   public List<Customer> getAllCustomers() { return this.customers; }
 
-  public Account createAccount(int customerId, String accountType) {
+  public void createAccount(int customerId, AccountType accountType) {
+    Customer customerToAddAccount = null;
+
+    for (Customer customer : customers) {
+      if (customer.getCustomerId() == customerId) {
+        customerToAddAccount = customer;
+        break; // Exit the loop once the customer is found
+      }
+    }
+
+    if (customerToAddAccount == null) {
+      System.out.println("Customer not found.");
+      return; // Exit the method if the customer is not found
+    }
+
+    Account newAccount = null;
+
     switch (accountType) {
-      case "Checking":
-        return new CheckingAccount(customerId);
-      case "Savings":
-        return new SavingsAccount(customerId);
-      case "Investment":
-        return new InvestmentAccount(customerId);
-      default:
+      case CHECKING -> newAccount = new CheckingAccount(1234, 0, Currency.USD);
+      case SAVINGS -> newAccount = new SavingsAccount(5678, 0, Currency.USD);
+      default -> {
         System.out.println("Invalid account type. Please try again.");
-    return null;
+        return; // Exit the method for invalid account types
+      }
+    }
+
+    customerToAddAccount.addAccount(newAccount);
   }
 
   public List<Account> getCustomerAccounts(Customer customer) {
@@ -54,9 +70,14 @@ public class Bank {
     return customerAccounts;
   }
 
-  public void performTransaction(Account fromAccount, Account toAccount, double amount) {
-    // Implement transaction logic here
-    // You may want to check account balances and perform appropriate actions.
+  public Customer getCustomerById(int customerId) {
+    for (Customer customer : this.customers) {
+      if (customer.getCustomerId() == customerId) {
+        return customer;
+      }
+    }
+    // Customer not found
+    return null;
   }
 
   @Override
