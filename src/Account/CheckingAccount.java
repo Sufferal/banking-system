@@ -8,9 +8,12 @@ public class CheckingAccount extends Account {
   }
 
   @Override
+  public void deposit(double amount) {
+
+  }
+
+  @Override
   public void withdraw(double amount) {
-    // Implement checking account-specific withdrawal rules
-    // For example, you may want to allow overdrafts with a limit.
-    super.withdraw(amount);
+
   }
 }

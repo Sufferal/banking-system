@@ -10,7 +10,7 @@ public class Main {
     Bank bank = new Bank("MAIB");
     Customer customer_1 = new Customer(1, "John", "Doe", 30, "123 Main St", "123-456-7890");
     Customer customer_2 = new Customer(2, "Ana", "Kramnik", 25, "456 Main St", "123-456-7890");
-    Customer customer_3 = new Customer(3, "Vasily", "Rotaru", 67, "456 Main St", "123-456-7890");
+    Customer customer_3 = new Customer(3, "Vasily", "Rotaru", 67, "789 Main St", "123-456-7890");
     bank.addCustomer(customer_1);
     bank.addCustomer(customer_2);
     bank.addCustomer(customer_3);

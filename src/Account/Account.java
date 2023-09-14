@@ -1,12 +1,11 @@
 package Account;
 
 import Bank.Currency;
-import Bank.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Account {
+public abstract class Account implements TransactionExecutor {
   private int number;
   private double balance;
   private Currency currency;
@@ -28,22 +27,12 @@ public class Account {
     this.transactions.add(transaction);
   }
 
-  public void deposit(double amount) {
-    if (amount > 0) {
-      balance += amount;
-      System.out.println("Deposit of " + amount + " " + currency + " successful.");
-    } else {
-      System.out.println("Invalid deposit amount.");
-    }
-  }
+  public abstract void deposit(double amount);
+  public abstract void withdraw(double amount);
 
-  public void withdraw(double amount) {
-    if (amount > 0 && balance >= amount) {
-      balance -= amount;
-      System.out.println("Withdrawal of " + amount + " " + currency + " successful.");
-    } else {
-      System.out.println("Invalid withdrawal amount or insufficient funds.");
-    }
+  @Override
+  public void executeTransaction(Transaction transaction) {
+
   }
 
   @Override

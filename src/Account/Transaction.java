@@ -1,5 +1,6 @@
-package Bank;
+package Account;
 import Account.*;
+import Bank.Currency;
 
 import java.time.Instant;
 

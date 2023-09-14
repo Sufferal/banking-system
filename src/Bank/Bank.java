@@ -15,6 +15,18 @@ public class Bank {
     this.customers = new ArrayList<>();
   }
 
+  public List<Customer> getAllCustomers() { return this.customers; }
+
+  public Customer getCustomerById(int customerId) {
+    for (Customer customer : this.customers) {
+      if (customer.getCustomerId() == customerId) {
+        return customer;
+      }
+    }
+    // Customer not found
+    return null;
+  }
+
   public void addCustomer(Customer customer) {
     this.customers.add(customer);
   }
@@ -28,8 +40,6 @@ public class Bank {
     }
     return false; // Customer not found
   }
-
-  public List<Customer> getAllCustomers() { return this.customers; }
 
   public void createAccount(int customerId, AccountType accountType) {
     Customer customerToAddAccount = null;
@@ -58,26 +68,6 @@ public class Bank {
     }
 
     customerToAddAccount.addAccount(newAccount);
-  }
-
-  public List<Account> getCustomerAccounts(Customer customer) {
-    List<Account> customerAccounts = new ArrayList<>();
-    for (Customer c : this.customers) {
-      if (c.equals(customer)) {
-        customerAccounts.addAll(c.getAccounts());
-      }
-    }
-    return customerAccounts;
-  }
-
-  public Customer getCustomerById(int customerId) {
-    for (Customer customer : this.customers) {
-      if (customer.getCustomerId() == customerId) {
-        return customer;
-      }
-    }
-    // Customer not found
-    return null;
   }
 
   @Override

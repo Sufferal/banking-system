@@ -8,10 +8,12 @@ public class SavingsAccount extends Account {
   }
 
   @Override
+  public void deposit(double amount) {
+
+  }
+
+  @Override
   public void withdraw(double amount) {
-    // Implement savings account-specific withdrawal rules
-    // For example, you may want to check if the balance is above a certain threshold.
-    // If not, deny the withdrawal.
-    super.withdraw(amount);
+
   }
 }
