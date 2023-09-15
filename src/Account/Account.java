@@ -5,27 +5,39 @@ import Transaction.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public abstract class Account implements TransactionExecutor {
-  private int number;
+  private String accountNumber;
   private double balance;
   private Currency currency;
   private List<Transaction> transactions;
 
-  public Account(int number, double balance, Currency currency) {
-    this.number = number;
+  public Account(double balance, Currency currency) {
+    this.accountNumber = this.generateAccountNumber();
     this.balance = balance;
     this.currency = currency;
     this.transactions = new ArrayList<>();
   }
 
-  public int getNumber() { return this.number; }
+  public String getNumber() { return this.accountNumber; }
   public double getBalance() { return this.balance; }
   public Currency getCurrency() { return this.currency; }
   public List<Transaction> getTransactions() { return this.transactions; }
 
   public void addTransaction(Transaction transaction) {
     this.transactions.add(transaction);
+  }
+  public String generateAccountNumber() {
+    StringBuilder accountNumber = new StringBuilder(16);
+    Random random = new Random();
+
+    for (int i = 0; i < 16; i++) {
+      int digit = random.nextInt(10);
+      accountNumber.append(digit);
+    }
+
+    return accountNumber.toString();
   }
 
   public abstract void deposit(double amount);
@@ -38,6 +50,6 @@ public abstract class Account implements TransactionExecutor {
 
   @Override
   public String toString() {
-    return "(Account) " + number + " has " + balance + " " + currency;
+    return "(Account) " + accountNumber + " has " + balance + " " + currency;
   }
 }

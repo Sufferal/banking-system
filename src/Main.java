@@ -24,32 +24,29 @@ public class Main {
     bank.createAccount(customer_3.getCustomerId(), AccountType.CHECKING);
     bank.createAccount(customer_3.getCustomerId(), AccountType.SAVINGS);
 
-    try (scanner) {
-      while (true) {
-        System.out.println("===== Select Mode =====");
-        System.out.println("1. Bank");
-        System.out.println("2. Customer");
-        System.out.println("3. Exit");
-        System.out.print("Enter your choice: ");
-        int modeChoice = scanner.nextInt();
+    while (true) {
+      System.out.println("===== Select Mode =====");
+      System.out.println("1. Bank");
+      System.out.println("2. Customer");
+      System.out.println("3. Exit");
+      System.out.print("Enter your choice: ");
+      int modeChoice = scanner.nextInt();
 
-        if (modeChoice == 1) {
-          handleBankMode(bank);
-        } else if (modeChoice == 2) {
-          handleCustomerMode(bank);
-        } else if (modeChoice == 3) {
-          System.out.println("Exiting the program.");
-          break;
-        } else {
-          System.out.println("Invalid choice. Please try again.");
+      switch (modeChoice) {
+        case 1 -> handleBankMode(bank);
+        case 2 -> handleCustomerMode(bank);
+        case 3 -> {
+          System.out.println("Exiting the program...");
+          return;
         }
+        default -> System.out.println("Invalid choice. Please try again.");
       }
     }
   }
 
   private static void handleBankMode(Bank bank) {
     while (true) {
-      System.out.println("$$$$$ Bank Mode $$$$$");
+      System.out.println(">>>>> Bank Mode <<<<<");
       System.out.println("1. See ALL customers");
       System.out.println("2. See ONE customer");
       System.out.println("3. Add a customer");
@@ -59,41 +56,26 @@ public class Main {
       System.out.print("Enter your choice: ");
       int bankChoice = Main.scanner.nextInt();
 
-      if (bankChoice == 1) {
-        for (Customer c : bank.getAllCustomers()) {
-          System.out.println(c);
+      switch (bankChoice) {
+        case 1 -> {
+          for (Customer c : bank.getAllCustomers()) {
+            System.out.println(c);
+          }
         }
-      } else if (bankChoice == 2) {
-        seeOneCustomer(bank);
-      } else if (bankChoice == 3) {
-        bank.addCustomer(Customer.createCustomerFromInput());
-      } else if (bankChoice == 4) {
-        removeCustomer(bank);
-      } else if (bankChoice == 5) {
-        createAccount(bank);
-      } else if (bankChoice == 6) {
-        break;
-      } else {
-        System.out.println("Invalid choice. Please try again.");
+        case 2 -> seeOneCustomer(bank);
+        case 3 -> bank.addCustomer(Customer.createCustomerFromInput());
+        case 4 -> removeCustomer(bank);
+        case 5 -> createAccount(bank);
+        case 6 -> {
+          System.out.println("Back to main menu...");
+          return;
+        }
+        default -> System.out.println("Invalid choice. Please try again.");
       }
     }
   }
 
-  private static void seeOneCustomer(Bank bank) {
-    System.out.print("Enter the Customer ID to see: ");
-    int customerIdToSee = Main.scanner.nextInt();
-
-    Customer customerToSee = bank.getCustomerById(customerIdToSee);
-
-    if (customerToSee != null) {
-      System.out.println(customerToSee);
-    } else {
-      System.out.println("Customer not found.");
-    }
-  }
-
   private static void handleCustomerMode(Bank bank) {
-    // Prompt for the customer ID
     System.out.print("Enter your Customer ID: ");
     int customerId = Main.scanner.nextInt();
 
@@ -112,17 +94,32 @@ public class Main {
       System.out.print("Enter your choice: ");
       int customerChoice = Main.scanner.nextInt();
 
-      if (customerChoice == 1) {
-        for (Account account : customer.getAccounts()) {
-          System.out.println(account);
+      switch (customerChoice) {
+        case 1 -> {
+          for (Account account : customer.getAccounts()) {
+            System.out.println(account);
+          }
         }
-      } else if (customerChoice == 2) {
-        viewOneAccount(customer);
-      } else if (customerChoice == 3) {
-        break;
-      } else {
-        System.out.println("Invalid choice. Please try again.");
+        case 2 -> viewOneAccount(customer);
+        case 3 -> {
+          System.out.println("Back to main menu...");
+          return;
+        }
+        default -> System.out.println("Invalid choice. Please try again.");
       }
+    }
+  }
+
+  private static void seeOneCustomer(Bank bank) {
+    System.out.print("Enter the Customer ID to see: ");
+    int customerIdToSee = Main.scanner.nextInt();
+
+    Customer customerToSee = bank.getCustomerById(customerIdToSee);
+
+    if (customerToSee != null) {
+      System.out.println(customerToSee);
+    } else {
+      System.out.println("Customer not found.");
     }
   }
 
@@ -151,6 +148,8 @@ public class Main {
 
   private static void viewOneAccount(Customer customer) {
     System.out.print("Enter the account number: ");
+  }
+}
 //    int accountNumber = Main.scanner.nextInt();
 //    Account currentAccount = customer.getAccountByNumber(accountNumber);
 //
@@ -159,8 +158,6 @@ public class Main {
 //    } else {
 //      System.out.println("Invalid account number.");
 //    }
-  }
-}
 
 //import Account.*;
 //import Bank.*;

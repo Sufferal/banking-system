@@ -49,23 +49,23 @@ public class Bank {
     for (Customer customer : customers) {
       if (customer.getCustomerId() == customerId) {
         customerToAddAccount = customer;
-        break; // Exit the loop once the customer is found
+        break;
       }
     }
 
     if (customerToAddAccount == null) {
       System.out.println("Customer not found.");
-      return; // Exit the method if the customer is not found
+      return;
     }
 
     Account newAccount = null;
 
     switch (accountType) {
-      case CHECKING -> newAccount = new CheckingAccount(1234, 0, Currency.USD);
-      case SAVINGS -> newAccount = new SavingsAccount(5678, 0, Currency.USD);
+      case CHECKING -> newAccount = new CheckingAccount(0, this.nationalCurrency);
+      case SAVINGS -> newAccount = new SavingsAccount(0, this.nationalCurrency);
       default -> {
         System.out.println("Invalid account type. Please try again.");
-        return; // Exit the method for invalid account types
+        return;
       }
     }
 
