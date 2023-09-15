@@ -7,7 +7,7 @@ import java.util.Scanner;
 public class Main {
   private static final Scanner scanner = new Scanner(System.in);
   public static void main(String[] args) {
-    Bank bank = new Bank("MAIB");
+    Bank bank = new Bank("MAIB", Currency.MDL);
     Customer customer_1 = new Customer(1, "John", "Doe", 30, "123 Main St", "123-456-7890");
     Customer customer_2 = new Customer(2, "Ana", "Kramnik", 25, "456 Main St", "123-456-7890");
     Customer customer_3 = new Customer(3, "Vasily", "Rotaru", 67, "789 Main St", "123-456-7890");

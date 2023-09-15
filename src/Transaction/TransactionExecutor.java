@@ -1,4 +1,4 @@
-package Account;
+package Transaction;
 
 public interface TransactionExecutor {
   void executeTransaction(Transaction transaction);

@@ -8,10 +8,12 @@ import Account.*;
 
 public class Bank {
   private String name;
+  private Currency nationalCurrency;
   private List<Customer> customers;
 
-  public Bank(String name) {
+  public Bank(String name, Currency nationalCurrency) {
     this.name = name;
+    this.nationalCurrency = nationalCurrency;
     this.customers = new ArrayList<>();
   }
 
