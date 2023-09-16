@@ -15,14 +15,14 @@ public class Main {
     bank.addCustomer(customer_2);
     bank.addCustomer(customer_3);
 
-    bank.createAccount(customer_1.getCustomerId(), AccountType.CHECKING);
-    bank.createAccount(customer_1.getCustomerId(), AccountType.SAVINGS);
+    bank.createAccount(customer_1.getCustomerId(), AccountType.CHECKING, Currency.MDL);
+    bank.createAccount(customer_1.getCustomerId(), AccountType.SAVINGS, Currency.USD);
 
-    bank.createAccount(customer_2.getCustomerId(), AccountType.CHECKING);
-    bank.createAccount(customer_2.getCustomerId(), AccountType.SAVINGS);
+    bank.createAccount(customer_2.getCustomerId(), AccountType.CHECKING, Currency.MDL);
+    bank.createAccount(customer_2.getCustomerId(), AccountType.SAVINGS, Currency.EUR);
 
-    bank.createAccount(customer_3.getCustomerId(), AccountType.CHECKING);
-    bank.createAccount(customer_3.getCustomerId(), AccountType.SAVINGS);
+    bank.createAccount(customer_3.getCustomerId(), AccountType.CHECKING, Currency.MDL);
+    bank.createAccount(customer_3.getCustomerId(), AccountType.SAVINGS, Currency.USD);
 
     while (true) {
       System.out.println("===== Select Mode =====");
@@ -141,9 +141,12 @@ public class Main {
     Main.scanner.nextLine(); // Consume the newline character
 
     System.out.print("Enter the account type (checking/savings): ");
-    String accountType = Main.scanner.nextLine().toLowerCase();
+    AccountType accountType = AccountType.valueOf(Main.scanner.nextLine().toUpperCase());
 
-    bank.createAccount(customerIdAccount, AccountType.valueOf(accountType.toUpperCase()));
+    System.out.print("Enter the currency (MDL, USD, EUR): ");
+    Currency currency = Currency.valueOf(Main.scanner.nextLine().toUpperCase());
+
+    bank.createAccount(customerIdAccount, accountType, currency);
   }
 
   private static void viewOneAccount(Customer customer) {

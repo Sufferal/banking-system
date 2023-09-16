@@ -26,11 +26,19 @@ public class Customer {
   }
 
   public int getCustomerId() { return this.customerId; }
+
   public List<Account> getAccounts() {
     return this.accounts;
   }
+
   public void addAccount(Account account) {
     this.accounts.add(account);
+  }
+
+  public void printAccounts() {
+    for (Account account : this.accounts) {
+      System.out.println(account);
+    }
   }
 
   // Factory method to create a customer from user input
@@ -64,8 +72,16 @@ public class Customer {
 
   @Override
   public String toString() {
-    return "(Customer) #" + customerId + " " + firstName + " " + lastName + ", " + age + " y.o. lives at " + address +
-        "\n\t\t\tContact: " + phone + ", " +
-        "\n\t\t\tAccounts: " + accounts.size();
+    StringBuilder sb = new StringBuilder();
+    sb.append("(Customer) #").append(customerId).append(" ").append(firstName).append(" ").append(lastName)
+        .append(", ").append(age).append(" y.o. lives at ").append(address)
+        .append("\n\t\t\tContact: ").append(phone)
+        .append("\n\t\t\tAccounts:\n");
+
+    for (Account account : this.accounts) {
+      sb.append("\t\t\t").append(account).append("\n");
+    }
+
+    return sb.toString();
   }
 }

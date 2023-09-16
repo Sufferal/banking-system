@@ -43,7 +43,7 @@ public class Bank {
     return false; // Customer not found
   }
 
-  public void createAccount(int customerId, AccountType accountType) {
+  public void createAccount(int customerId, AccountType accountType, Currency currency) {
     Customer customerToAddAccount = null;
 
     for (Customer customer : customers) {
@@ -61,8 +61,8 @@ public class Bank {
     Account newAccount = null;
 
     switch (accountType) {
-      case CHECKING -> newAccount = new CheckingAccount(0, this.nationalCurrency);
-      case SAVINGS -> newAccount = new SavingsAccount(0, this.nationalCurrency);
+      case CHECKING -> newAccount = new CheckingAccount(0, currency);
+      case SAVINGS -> newAccount = new SavingsAccount(0, currency);
       default -> {
         System.out.println("Invalid account type. Please try again.");
         return;
