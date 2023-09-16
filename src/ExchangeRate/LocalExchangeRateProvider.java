@@ -11,6 +11,8 @@ public class LocalExchangeRateProvider implements ExchangeRateProvider {
 
   public LocalExchangeRateProvider() {
     exchangeRates = new HashMap<>();
+    exchangeRates.put("USD-MDL", 0.056);
+    exchangeRates.put("MDL-USD", 17.92);
     exchangeRates.put("USD-EUR", 1.07);
     exchangeRates.put("EUR-USD", 0.94);
   }

@@ -1,8 +1,11 @@
 package Account;
 
 import Bank.Currency;
+import ExchangeRate.ExchangeRateProvider;
+import ExchangeRate.LocalExchangeRateProvider;
 import Transaction.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -20,7 +23,7 @@ public abstract class Account implements TransactionExecutor {
     this.transactions = new ArrayList<>();
   }
 
-  public String getNumber() { return this.accountNumber; }
+  public String getAccountNumber() { return this.accountNumber; }
   public double getBalance() { return this.balance; }
   public Currency getCurrency() { return this.currency; }
   public List<Transaction> getTransactions() { return this.transactions; }
@@ -28,6 +31,7 @@ public abstract class Account implements TransactionExecutor {
   public void addTransaction(Transaction transaction) {
     this.transactions.add(transaction);
   }
+
   public String generateAccountNumber() {
     StringBuilder accountNumber = new StringBuilder(16);
     Random random = new Random();
@@ -40,8 +44,26 @@ public abstract class Account implements TransactionExecutor {
     return accountNumber.toString();
   }
 
-  public abstract void deposit(double amount);
-  public abstract void withdraw(double amount);
+  public boolean hasSufficientFunds(double amount) {
+    return this.balance >= amount;
+  }
+
+  public void deposit(double amount, Currency transactionCurrency) {
+    double exchangeRate = 1;
+
+    if (transactionCurrency != this.currency) {
+      ExchangeRateProvider exchangeRateProvider = new LocalExchangeRateProvider();
+      Currency sourceCurrency = this.currency;
+      LocalDate date = LocalDate.now();
+      exchangeRate = exchangeRateProvider.getExchangeRate(sourceCurrency, transactionCurrency, date);
+    }
+
+    this.balance += amount * exchangeRate;
+  }
+
+  public void withdraw(double amount) {
+    this.balance -= amount;
+  }
 
   @Override
   public void executeTransaction(Transaction transaction) {
@@ -50,6 +72,6 @@ public abstract class Account implements TransactionExecutor {
 
   @Override
   public String toString() {
-    return "(Account) " + accountNumber + " has " + balance + " " + currency;
+    return "(Account) " + accountNumber + " has " + String.format("%.2f", balance) + " " + currency;
   }
 }

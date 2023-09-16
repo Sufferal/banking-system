@@ -4,6 +4,7 @@ import Account.Account;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Customer {
@@ -35,10 +36,14 @@ public class Customer {
     this.accounts.add(account);
   }
 
-  public void printAccounts() {
+  public Account getAccountByNumber(String accountNumber) {
     for (Account account : this.accounts) {
-      System.out.println(account);
+      if (Objects.equals(account.getAccountNumber(), accountNumber)) {
+        return account;
+      }
     }
+
+    return null;
   }
 
   // Factory method to create a customer from user input

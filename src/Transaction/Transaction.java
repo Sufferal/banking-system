@@ -6,13 +6,13 @@ import java.time.Instant;
 
 public class Transaction {
   private int transactionId;
-  private int fromAccountNumber;
-  private int toAccountNumber;
+  private String fromAccountNumber;
+  private String toAccountNumber;
   private double amount;
   private Currency currency;
   private Instant timestamp;
 
-  public Transaction(int transactionId, int fromAccountNumber, int toAccountNumber,
+  public Transaction(int transactionId, String fromAccountNumber, String toAccountNumber,
                      double amount, Currency currency, Instant timestamp) {
     this.transactionId = transactionId;
     this.fromAccountNumber = fromAccountNumber;
