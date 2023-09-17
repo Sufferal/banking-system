@@ -5,6 +5,7 @@ import Bank.Currency;
 import java.time.Instant;
 
 public class Transaction {
+  private static int lastTransactionId = 0;
   private int transactionId;
   private String fromAccountNumber;
   private String toAccountNumber;
@@ -12,9 +13,9 @@ public class Transaction {
   private Currency currency;
   private Instant timestamp;
 
-  public Transaction(int transactionId, String fromAccountNumber, String toAccountNumber,
+  public Transaction(String fromAccountNumber, String toAccountNumber,
                      double amount, Currency currency, Instant timestamp) {
-    this.transactionId = transactionId;
+    this.transactionId = getNextTransactionId();
     this.fromAccountNumber = fromAccountNumber;
     this.toAccountNumber = toAccountNumber;
     this.amount = amount;
@@ -22,9 +23,13 @@ public class Transaction {
     this.timestamp = timestamp;
   }
 
+  private synchronized static int getNextTransactionId() {
+    return ++lastTransactionId;
+  }
+
   @Override
   public String toString() {
-    return "(Transaction) #" + transactionId + " from Account #" + fromAccountNumber + " to Account #" + toAccountNumber +
+    return "(Transaction) #" + transactionId + " from Account " + fromAccountNumber + " to Account " + toAccountNumber +
         ": " + amount + " " + currency + " at " + timestamp;
   }
 }

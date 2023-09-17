@@ -62,7 +62,7 @@ public class Bank {
 
     switch (accountType) {
       case CHECKING -> newAccount = new CheckingAccount(100, currency);
-      case SAVINGS -> newAccount = new SavingsAccount(1000, currency);
+      case SAVINGS -> newAccount = new SavingsAccount(100, currency);
       default -> {
         System.out.println("Invalid account type. Please try again.");
         return;

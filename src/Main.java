@@ -4,7 +4,6 @@ import Customer.*;
 import Transaction.*;
 
 import java.time.Instant;
-import java.util.Objects;
 import java.util.Scanner;
 
 public class Main {
@@ -169,32 +168,8 @@ public class Main {
         System.out.print("Enter your choice: ");
         int optionChoice = scanner.nextInt();
         switch (optionChoice) {
-          case 1 -> depositAccount(customer, currentAccount);
-          case 2 -> {
-            // Consume the newline character left in the input stream
-            scanner.nextLine();
-            System.out.print("Enter the account number to deposit TO: ");
-            String accountNumberTo = scanner.nextLine();
-            Account accountToDepositTo = null;
-
-            for (Account account : customer.getAccounts()) {
-              if (Objects.equals(accountNumberTo, account.getAccountNumber())) {
-                accountToDepositTo = account;
-                break;
-              }
-            }
-
-            if (accountToDepositTo == null) {
-              System.out.println("Account not found.");
-              break operationsLoop; // Exit the method if the account is not found
-            }
-
-            currentAccount.addTransaction(new Transaction(2, currentAccount.getAccountNumber(),
-                accountToDepositTo.getAccountNumber(), 1, Currency.USD, Instant.now()));
-            accountToDepositTo.addTransaction(new Transaction(2, currentAccount.getAccountNumber(),
-                accountToDepositTo.getAccountNumber(), 1, Currency.USD, Instant.now()));
-            currentAccount.deposit(2, Currency.USD);
-          }
+          case 1 -> depositFunds(customer, currentAccount);
+          case 2 -> withdrawFunds(customer, currentAccount);
           case 3 -> System.out.println(currentAccount);
           case 4 -> {
             for (Transaction transaction : currentAccount.getTransactions()) {
@@ -215,7 +190,7 @@ public class Main {
     }
   }
 
-  private static void depositAccount(Customer customer, Account currentAccount) {
+  private static void depositFunds(Customer customer, Account currentAccount) {
     // Consume the newline character left in the input stream
     scanner.nextLine();
     System.out.println("Enter the account number to deposit FROM: ");
@@ -236,11 +211,44 @@ public class Main {
       return;
     }
 
-    Transaction t = new Transaction(1, accountToDepositFrom.getAccountNumber(), currentAccount.getAccountNumber(),
+    Transaction t = new Transaction(accountToDepositFrom.getAccountNumber(), currentAccount.getAccountNumber(),
         amount, transactionCurrency, Instant.now());
 
     currentAccount.addTransaction(t);
     accountToDepositFrom.addTransaction(t);
+
     currentAccount.deposit(amount, transactionCurrency);
+    accountToDepositFrom.withdraw(amount, transactionCurrency);
+  }
+
+  private static void withdrawFunds(Customer customer, Account currentAccount) {
+    // Consume the newline character left in the input stream
+    scanner.nextLine();
+    System.out.println("Enter the account number to withdraw TO: ");
+    String accountNumberTo = scanner.nextLine();
+    Account accountToWithdrawTo = customer.getAccountByNumber(accountNumberTo);
+
+    if (accountToWithdrawTo == null) {
+      System.out.println("Account not found.");
+      return;
+    }
+
+    Currency transactionCurrency = currentAccount.getCurrency();
+    System.out.println("Enter the amount to withdraw: ");
+    double amount = scanner.nextDouble();
+
+    if (!currentAccount.hasSufficientFunds(amount)) {
+      System.out.println("Insufficient funds.");
+      return;
+    }
+
+    Transaction t = new Transaction(currentAccount.getAccountNumber(), accountToWithdrawTo.getAccountNumber(),
+        amount, transactionCurrency, Instant.now());
+
+    currentAccount.addTransaction(t);
+    accountToWithdrawTo.addTransaction(t);
+
+    accountToWithdrawTo.deposit(amount, transactionCurrency);
+    currentAccount.withdraw(amount, transactionCurrency);
   }
 }

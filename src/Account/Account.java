@@ -61,8 +61,17 @@ public abstract class Account implements TransactionExecutor {
     this.balance += amount * exchangeRate;
   }
 
-  public void withdraw(double amount) {
-    this.balance -= amount;
+  public void withdraw(double amount, Currency transactionCurrency) {
+    double exchangeRate = 1;
+
+    if (transactionCurrency != this.currency) {
+      ExchangeRateProvider exchangeRateProvider = new LocalExchangeRateProvider();
+      Currency sourceCurrency = this.currency;
+      LocalDate date = LocalDate.now();
+      exchangeRate = exchangeRateProvider.getExchangeRate(transactionCurrency, sourceCurrency, date);
+    }
+
+    this.balance -= amount * exchangeRate;
   }
 
   @Override
