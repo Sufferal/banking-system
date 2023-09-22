@@ -10,28 +10,33 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public abstract class Account implements TransactionExecutor {
+public abstract class Account implements AccountManagement  {
   private String accountNumber;
   private double balance;
   private Currency currency;
-  private List<Transaction> transactions;
+  private List<Transaction> transactionHistory;
 
   public Account(double balance, Currency currency) {
     this.accountNumber = this.generateAccountNumber();
     this.balance = balance;
     this.currency = currency;
-    this.transactions = new ArrayList<>();
+    this.transactionHistory = new ArrayList<>();
   }
 
   public String getAccountNumber() { return this.accountNumber; }
   public double getBalance() { return this.balance; }
   public Currency getCurrency() { return this.currency; }
-  public List<Transaction> getTransactions() { return this.transactions; }
+  public List<Transaction> getTransactionHistory() { return this.transactionHistory; }
 
   public void addTransaction(Transaction transaction) {
-    this.transactions.add(transaction);
+    this.transactionHistory.add(transaction);
   }
 
+  public boolean hasSufficientFunds(double amount) {
+    return this.balance >= amount;
+  }
+
+  @Override
   public String generateAccountNumber() {
     StringBuilder accountNumber = new StringBuilder(16);
     Random random = new Random();
@@ -44,10 +49,7 @@ public abstract class Account implements TransactionExecutor {
     return accountNumber.toString();
   }
 
-  public boolean hasSufficientFunds(double amount) {
-    return this.balance >= amount;
-  }
-
+  @Override
   public void deposit(double amount, Currency transactionCurrency) {
     double exchangeRate = 1;
 
@@ -61,6 +63,7 @@ public abstract class Account implements TransactionExecutor {
     this.balance += amount * exchangeRate;
   }
 
+  @Override
   public void withdraw(double amount, Currency transactionCurrency) {
     double exchangeRate = 1;
 
@@ -72,11 +75,6 @@ public abstract class Account implements TransactionExecutor {
     }
 
     this.balance -= amount * exchangeRate;
-  }
-
-  @Override
-  public void executeTransaction(Transaction transaction) {
-
   }
 
   @Override

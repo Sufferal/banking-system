@@ -6,7 +6,7 @@ import java.util.List;
 import Customer.*;
 import Account.*;
 
-public class Bank {
+public class Bank implements CustomerManagement {
   private String name;
   private Currency nationalCurrency;
   private List<Customer> customers;
@@ -19,20 +19,12 @@ public class Bank {
 
   public List<Customer> getAllCustomers() { return this.customers; }
 
-  public Customer getCustomerById(int customerId) {
-    for (Customer customer : this.customers) {
-      if (customer.getCustomerId() == customerId) {
-        return customer;
-      }
-    }
-    // Customer not found
-    return null;
-  }
-
+  @Override
   public void addCustomer(Customer customer) {
     this.customers.add(customer);
   }
 
+  @Override
   public boolean removeCustomer(int customerIdToRemove) {
     for (Customer customer : customers) {
       if (customer.getCustomerId() == customerIdToRemove) {
@@ -40,10 +32,21 @@ public class Bank {
         return true;
       }
     }
-    return false; // Customer not found
+    return false;
   }
 
-  public void createAccount(int customerId, AccountType accountType, Currency currency) {
+  @Override
+  public Customer getCustomerById(int customerId) {
+    for (Customer customer : this.customers) {
+      if (customer.getCustomerId() == customerId) {
+        return customer;
+      }
+    }
+    return null;
+  }
+
+  @Override
+  public void createCustomerAccount(int customerId, AccountType accountType, Currency currency) {
     Customer customerToAddAccount = null;
 
     for (Customer customer : customers) {
@@ -60,9 +63,11 @@ public class Bank {
 
     Account newAccount = null;
 
+    Currency accountCurrency = currency == null ? this.nationalCurrency : currency;
+
     switch (accountType) {
-      case CHECKING -> newAccount = new CheckingAccount(100, currency);
-      case SAVINGS -> newAccount = new SavingsAccount(100, currency);
+      case CHECKING -> newAccount = new CheckingAccount(100, accountCurrency);
+      case SAVINGS -> newAccount = new SavingsAccount(100, accountCurrency);
       default -> {
         System.out.println("Invalid account type. Please try again.");
         return;

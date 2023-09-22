@@ -9,7 +9,7 @@ import java.util.Scanner;
 public class Main {
   private static final Scanner scanner = new Scanner(System.in);
   public static void main(String[] args) {
-    Bank bank = new Bank("MAIB", Currency.MDL);
+    CustomerManagement bank = new Bank("MAIB", Currency.MDL);
     Customer customer_1 = new Customer(1, "John", "Doe", 30, "123 Main St", "123-456-7890");
     Customer customer_2 = new Customer(2, "Ana", "Kramnik", 25, "456 Main St", "123-456-7890");
     Customer customer_3 = new Customer(3, "Vasily", "Rotaru", 67, "789 Main St", "123-456-7890");
@@ -17,14 +17,14 @@ public class Main {
     bank.addCustomer(customer_2);
     bank.addCustomer(customer_3);
 
-    bank.createAccount(customer_1.getCustomerId(), AccountType.CHECKING, Currency.MDL);
-    bank.createAccount(customer_1.getCustomerId(), AccountType.SAVINGS, Currency.USD);
+    bank.createCustomerAccount(customer_1.getCustomerId(), AccountType.CHECKING, Currency.MDL);
+    bank.createCustomerAccount(customer_1.getCustomerId(), AccountType.SAVINGS, Currency.USD);
 
-    bank.createAccount(customer_2.getCustomerId(), AccountType.CHECKING, Currency.MDL);
-    bank.createAccount(customer_2.getCustomerId(), AccountType.SAVINGS, Currency.EUR);
+    bank.createCustomerAccount(customer_2.getCustomerId(), AccountType.CHECKING, Currency.MDL);
+    bank.createCustomerAccount(customer_2.getCustomerId(), AccountType.SAVINGS, Currency.EUR);
 
-    bank.createAccount(customer_3.getCustomerId(), AccountType.CHECKING, Currency.MDL);
-    bank.createAccount(customer_3.getCustomerId(), AccountType.SAVINGS, Currency.USD);
+    bank.createCustomerAccount(customer_3.getCustomerId(), AccountType.CHECKING, Currency.MDL);
+    bank.createCustomerAccount(customer_3.getCustomerId(), AccountType.SAVINGS, Currency.USD);
 
     while (true) {
       System.out.println("===== Select Mode =====");
@@ -46,7 +46,7 @@ public class Main {
     }
   }
 
-  private static void handleBankMode(Bank bank) {
+  private static void handleBankMode(CustomerManagement bank) {
     while (true) {
       System.out.println(">>>>> Bank Mode <<<<<");
       System.out.println("1. See ALL customers");
@@ -77,7 +77,7 @@ public class Main {
     }
   }
 
-  private static void handleCustomerMode(Bank bank) {
+  private static void handleCustomerMode(CustomerManagement bank) {
     System.out.print("Enter your Customer ID: ");
     int customerId = Main.scanner.nextInt();
 
@@ -112,7 +112,7 @@ public class Main {
     }
   }
 
-  private static void seeOneCustomer(Bank bank) {
+  private static void seeOneCustomer(CustomerManagement bank) {
     System.out.print("Enter the Customer ID to see: ");
     int customerIdToSee = Main.scanner.nextInt();
 
@@ -125,7 +125,7 @@ public class Main {
     }
   }
 
-  private static void removeCustomer(Bank bank) {
+  private static void removeCustomer(CustomerManagement bank) {
     System.out.print("Enter the Customer ID to remove: ");
     int customerIdToRemove = Main.scanner.nextInt();
 
@@ -136,20 +136,30 @@ public class Main {
     }
   }
 
-  private static void createAccount(Bank bank) {
-    System.out.print("Enter the Customer ID to add account: ");
+  private static void createAccount(CustomerManagement bank) {
+    System.out.print("Enter the Customer ID to add an account: ");
     int customerIdAccount = Main.scanner.nextInt();
-
     Main.scanner.nextLine(); // Consume the newline character
 
     System.out.print("Enter the account type (checking/savings): ");
     AccountType accountType = AccountType.valueOf(Main.scanner.nextLine().toUpperCase());
 
-    System.out.print("Enter the currency (MDL, USD, EUR): ");
-    Currency currency = Currency.valueOf(Main.scanner.nextLine().toUpperCase());
+    System.out.print("Enter the currency (MDL, USD, EUR, or leave empty for default): ");
+    String currencyInput = Main.scanner.nextLine().toUpperCase();
 
-    bank.createAccount(customerIdAccount, accountType, currency);
+    Currency currency = null;
+
+    if (!currencyInput.isEmpty()) {
+      try {
+        currency = Currency.valueOf(currencyInput);
+      } catch (IllegalArgumentException e) {
+        System.out.println("Invalid currency. Using default national currency.");
+      }
+    }
+
+    bank.createCustomerAccount(customerIdAccount, accountType, currency);
   }
+
 
   private static void viewOneAccount(Customer customer) {
     System.out.print("Enter the account number: ");
@@ -172,7 +182,7 @@ public class Main {
           case 2 -> withdrawFunds(customer, currentAccount);
           case 3 -> System.out.println(currentAccount);
           case 4 -> {
-            for (Transaction transaction : currentAccount.getTransactions()) {
+            for (Transaction transaction : currentAccount.getTransactionHistory()) {
               System.out.println(transaction);
             }
           }
