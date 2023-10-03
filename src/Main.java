@@ -10,9 +10,9 @@ public class Main {
   private static final Scanner scanner = new Scanner(System.in);
   public static void main(String[] args) {
     CustomerManagement bank = new Bank("MAIB", Currency.MDL);
-    Customer customer_1 = new Customer(1, "John", "Doe", 30, "123 Main St", "123-456-7890");
-    Customer customer_2 = new Customer(2, "Ana", "Kramnik", 25, "456 Main St", "123-456-7890");
-    Customer customer_3 = new Customer(3, "Vasily", "Rotaru", 67, "789 Main St", "123-456-7890");
+    Customer customer_1 = new CustomerRegular(1, "John", "Doe", 30, "123 Main St", "123-456-7890");
+    Customer customer_2 = new CustomerPremium(2, "Ana", "Kramnik", "123-456-7890");
+    Customer customer_3 = new CustomerVIP(3);
     bank.addCustomer(customer_1);
     bank.addCustomer(customer_2);
     bank.addCustomer(customer_3);
@@ -51,7 +51,7 @@ public class Main {
       System.out.println(">>>>> Bank Mode <<<<<");
       System.out.println("1. See ALL customers");
       System.out.println("2. See ONE customer");
-      System.out.println("3. Add a customer");
+      System.out.println("3. Create a customer");
       System.out.println("4. Remove a customer");
       System.out.println("5. Create an account for a customer");
       System.out.println("6. Back to main menu");
@@ -65,7 +65,7 @@ public class Main {
           }
         }
         case 2 -> seeOneCustomer(bank);
-        case 3 -> bank.addCustomer(Customer.createCustomerFromInput());
+        case 3 -> createCustomer(bank);
         case 4 -> removeCustomer(bank);
         case 5 -> createAccount(bank);
         case 6 -> {
@@ -123,6 +123,15 @@ public class Main {
     } else {
       System.out.println("Customer not found.");
     }
+  }
+
+  private static void createCustomer(CustomerManagement bank) {
+    System.out.print("Enter the customer type (regular/premium/vip): ");
+    // Consume next line
+    Main.scanner.nextLine();
+    String customerTypeInput = Main.scanner.nextLine().toUpperCase();
+    CustomerType customerType = CustomerType.valueOf(customerTypeInput);
+    bank.createCustomer(customerType);
   }
 
   private static void removeCustomer(CustomerManagement bank) {
