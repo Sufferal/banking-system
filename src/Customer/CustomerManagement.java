@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface CustomerManagement {
   void addCustomer(Customer customer);
+  void createCustomer(CustomerType customerType);
   boolean removeCustomer(int customerIdToRemove);
   Customer getCustomerById(int customerId);
   List<Customer> getAllCustomers();

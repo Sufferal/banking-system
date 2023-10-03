@@ -25,6 +25,19 @@ public class Bank implements CustomerManagement {
   }
 
   @Override
+  public void createCustomer(CustomerType customerType) {
+    Customer customer = customerType.createCustomerFromInput();
+
+    if (customer != null) {
+      this.customers.add(customer);
+      System.out.println("Customer created successfully.");
+      return;
+    }
+
+    System.out.println("Customer creation failed.");
+  }
+
+  @Override
   public boolean removeCustomer(int customerIdToRemove) {
     for (Customer customer : customers) {
       if (customer.getCustomerId() == customerIdToRemove) {
@@ -62,18 +75,8 @@ public class Bank implements CustomerManagement {
     }
 
     Account newAccount = null;
-
     Currency accountCurrency = currency == null ? this.nationalCurrency : currency;
-
-    switch (accountType) {
-      case CHECKING -> newAccount = new CheckingAccount(100, accountCurrency);
-      case SAVINGS -> newAccount = new SavingsAccount(100, accountCurrency);
-      default -> {
-        System.out.println("Invalid account type. Please try again.");
-        return;
-      }
-    }
-
+    newAccount = accountType.createAccount(100, currency == null ? nationalCurrency : currency);
     customerToAddAccount.addAccount(newAccount);
   }
 
