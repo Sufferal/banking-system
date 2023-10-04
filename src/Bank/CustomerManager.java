@@ -1,30 +1,47 @@
 package Bank;
 
+import Account.Account;
+import Account.AccountType;
+import Customer.Customer;
+import Customer.CustomerType;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import Customer.*;
-import Account.*;
-
-public class Bank implements CustomerManagement {
-  private String name;
-  private Currency nationalCurrency;
+public class CustomerManager {
+  private static CustomerManager instance;
   private List<Customer> customers;
 
-  public Bank(String name, Currency nationalCurrency) {
-    this.name = name;
-    this.nationalCurrency = nationalCurrency;
+  // Private constructor to prevent external instantiation
+  private CustomerManager() {
     this.customers = new ArrayList<>();
   }
 
-  public List<Customer> getAllCustomers() { return this.customers; }
+  public static synchronized CustomerManager getInstance() {
+    if (instance == null) {
+      instance = new CustomerManager();
+    }
+    return instance;
+  }
 
-  @Override
+  public List<Customer> getAllCustomers() {
+    return this.customers;
+  }
+
   public void addCustomer(Customer customer) {
     this.customers.add(customer);
   }
 
-  @Override
+  public boolean removeCustomer(int customerIdToRemove) {
+    for (Customer customer : customers) {
+      if (customer.getCustomerId() == customerIdToRemove) {
+        customers.remove(customer);
+        return true;
+      }
+    }
+    return false;
+  }
+
   public void createCustomer(CustomerType customerType) {
     Customer customer = customerType.createCustomerFromInput();
 
@@ -37,20 +54,8 @@ public class Bank implements CustomerManagement {
     System.out.println("Customer creation failed.");
   }
 
-  @Override
-  public boolean removeCustomer(int customerIdToRemove) {
-    for (Customer customer : customers) {
-      if (customer.getCustomerId() == customerIdToRemove) {
-        customers.remove(customer);
-        return true;
-      }
-    }
-    return false;
-  }
-
-  @Override
   public Customer getCustomerById(int customerId) {
-    for (Customer customer : this.customers) {
+    for (Customer customer : customers) {
       if (customer.getCustomerId() == customerId) {
         return customer;
       }
@@ -58,7 +63,6 @@ public class Bank implements CustomerManagement {
     return null;
   }
 
-  @Override
   public void createCustomerAccount(int customerId, AccountType accountType, Currency currency) {
     Customer customerToAddAccount = null;
 
@@ -75,13 +79,14 @@ public class Bank implements CustomerManagement {
     }
 
     Account newAccount = null;
-    Currency accountCurrency = currency == null ? this.nationalCurrency : currency;
-    newAccount = accountType.createAccount(100, currency == null ? nationalCurrency : currency);
+    Currency accountCurrency = currency == null ? Currency.MDL : currency;
+    newAccount = accountType.createAccount(100, accountCurrency);
     customerToAddAccount.addAccount(newAccount);
   }
 
   @Override
   public String toString() {
-    return "(Bank) " + this.name + " has " + this.customers.size() + " customers";
+    return "There are "  + this.customers.size() + " customers" +
+        "\n" + this.customers;
   }
 }
