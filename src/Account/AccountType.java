@@ -1,20 +1,21 @@
 package Account;
 
+import Account.Factory.AccountFactory;
+import Account.Factory.CheckingAccountFactory;
+import Account.Factory.SavingsAccountFactory;
 import Bank.Currency;
 
 public enum AccountType {
-  SAVINGS {
-    @Override
-    public Account createAccount(double balance, Currency currency) {
-      return new SavingsAccount(balance, currency);
-    }
-  },
-  CHECKING {
-    @Override
-    public Account createAccount(double balance, Currency currency) {
-      return new CheckingAccount(balance, currency);
-    }
-  };
+  SAVINGS(new SavingsAccountFactory()),
+  CHECKING(new CheckingAccountFactory());
 
-  public abstract Account createAccount(double balance, Currency currency);
+  private final AccountFactory factory;
+
+  AccountType(AccountFactory factory) {
+    this.factory = factory;
+  }
+
+  public Account createAccount(double balance, Currency currency) {
+    return this.factory.createAccount(balance, currency);
+  }
 }
