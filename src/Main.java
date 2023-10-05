@@ -40,7 +40,7 @@ public class Main {
 
     OfferManager offerManager = new OfferManager();
 
-    offerManager.addOfferPrototype("discount10", new DiscountOffer("10% Discount on Loans"));
+    offerManager.addOfferPrototype("discount10", new DiscountOffer("10% Discount on Products"));
     offerManager.addOfferPrototype("bonus1000", new BonusPointsOffer(1000));
     offerManager.addOfferPrototype("loanMIL", new LoanOffer(1000000, Currency.USD));
 
@@ -207,7 +207,7 @@ public class Main {
     System.out.print("Enter the message to send: ");
     Main.scanner.nextLine(); // Consume the newline character
     String message = Main.scanner.nextLine();
-    Notification securityNotification = new SecurityNotification(message);
+    Notification securityNotification = new SecurityNotification(message, CustomerManager.getInstance().getAllCustomers());
     securityNotification.send();
   }
 
