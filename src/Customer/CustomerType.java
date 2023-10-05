@@ -65,7 +65,12 @@ public enum CustomerType {
       System.out.print("Customer ID: ");
       int customerId = scanner.nextInt();
 
-      return new CustomerVIP(customerId);
+      // Clear the scanner buffer
+      scanner.nextLine();
+      System.out.print("Nickname: ");
+      String nickname = scanner.nextLine();
+
+      return new CustomerVIP(customerId, nickname);
     }
   };
 

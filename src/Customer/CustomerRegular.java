@@ -1,6 +1,7 @@
 package Customer;
 
 import Account.Account;
+import Notification.Notification;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ public class CustomerRegular implements Customer {
   private String address;
   private String phone;
   private List<Account> accounts;
+  private List<Notification> notifications;
 
   public CustomerRegular(int customerId, String firstName, String lastName, int age, String address, String phone) {
     this.customerId = customerId;
@@ -23,10 +25,31 @@ public class CustomerRegular implements Customer {
     this.address = address;
     this.phone = phone;
     this.accounts = new ArrayList<Account>();
+    this.notifications = new ArrayList<Notification>();
+  }
+
+  public CustomerRegular(int customerId, String firstName, String lastName, int age, String address, String phone,
+                         List<Account> accounts, List<Notification> notifications) {
+    this.customerId = customerId;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.age = age;
+    this.address = address;
+    this.phone = phone;
+    this.accounts = accounts;
+    this.notifications = notifications;
   }
 
   @Override
   public int getCustomerId() { return this.customerId; }
+
+  @Override
+  public void addNotification(Notification notification) {
+    this.notifications.add(notification);
+  }
+
+  @Override
+  public List<Notification> getNotifications() { return this.notifications; }
 
   @Override
   public List<Account> getAccounts() {
@@ -61,6 +84,66 @@ public class CustomerRegular implements Customer {
       sb.append("\t\t\t").append(account).append("\n");
     }
 
+    sb.append("\t\t\tNotifications:\n");
+    for (Notification notification : this.notifications) {
+      sb.append("\t\t\t").append(notification).append("\n");
+    }
+
     return sb.toString();
+  }
+
+  // Builder
+  public static class Builder {
+    private int customerId;
+    private String firstName;
+    private String lastName;
+    private int age;
+    private String address;
+    private String phone;
+    private List<Account> accounts = new ArrayList<Account>();
+    private List<Notification> notifications = new ArrayList<Notification>();
+
+    public Builder(int customerId) {
+      this.customerId = customerId;
+    }
+
+    public Builder setFirstName(String firstName) {
+      this.firstName = firstName;
+      return this;
+    }
+
+    public Builder setLastName(String lastName) {
+      this.lastName = lastName;
+      return this;
+    }
+
+    public Builder setAge(int age) {
+      this.age = age;
+      return this;
+    }
+
+    public Builder setAddress(String address) {
+      this.address = address;
+      return this;
+    }
+
+    public Builder setPhone(String phone) {
+      this.phone = phone;
+      return this;
+    }
+
+    public Builder addAccount(Account account) {
+      this.accounts.add(account);
+      return this;
+    }
+
+    public Builder addNotification(Notification notification) {
+      this.notifications.add(notification);
+      return this;
+    }
+
+    public CustomerRegular build() {
+      return new CustomerRegular(customerId, firstName, lastName, age, address, phone, accounts, notifications);
+    }
   }
 }

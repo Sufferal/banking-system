@@ -27,6 +27,22 @@ public class Transaction {
     return ++lastTransactionId;
   }
 
+  public Currency getCurrency() {
+    return this.currency;
+  }
+  public Instant getTimestamp() {
+    return this.timestamp;
+  }
+  public String getFromAccountNumber() {
+    return this.fromAccountNumber;
+  }
+  public String getToAccountNumber() {
+    return this.toAccountNumber;
+  }
+  public double getAmount() {
+    return this.amount;
+  }
+
   @Override
   public String toString() {
     return "(Transaction) #" + transactionId + " from Account " + fromAccountNumber + " to Account " + toAccountNumber +

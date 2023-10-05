@@ -1,6 +1,8 @@
 import Account.*;
 import Bank.*;
 import Customer.*;
+import Notification.*;
+import Offer.*;
 import Transaction.*;
 
 import java.time.Instant;
@@ -8,23 +10,53 @@ import java.util.Scanner;
 
 public class Main {
   private static final Scanner scanner = new Scanner(System.in);
-  public static void main(String[] args) {
-    CustomerManagement bank = new Bank("MAIB", Currency.MDL);
-    Customer customer_1 = new CustomerRegular(1, "John", "Doe", 30, "123 Main St", "123-456-7890");
-    Customer customer_2 = new CustomerPremium(2, "Ana", "Kramnik", "123-456-7890");
-    Customer customer_3 = new CustomerVIP(3);
+  public static void main(String[] args) throws CloneNotSupportedException {
+    CustomerManager bank = CustomerManager.getInstance();
+
+    CustomerRegular.Builder builder = new CustomerRegular.Builder(1);
+    Customer customer_1 = builder.setFirstName("Renala")
+      .setLastName("Mureșan")
+      .setAge(25)
+      .setAddress("Str. Mihai Eminescu, 1, Chișinău, Moldova")
+      .setPhone("+373 79 000 000")
+      .addAccount(new CheckingAccount(12.57, Currency.MDL))
+      .addAccount(new SavingsAccount(198, Currency.EUR))
+      .build();
+
+    CustomerPremium.Builder builder2 = new CustomerPremium.Builder(2);
+    Customer customer_2 = builder2.setFirstName("Vasile")
+      .setLastName("Ciobanu")
+      .setPhone("+373 79 000 001")
+      .addAccount(new CheckingAccount(134, Currency.USD))
+      .addAccount(new SavingsAccount(953, Currency.EUR))
+      .addNotification(new SecurityNotification("Your account has been hacked :("))
+      .build();
+
     bank.addCustomer(customer_1);
     bank.addCustomer(customer_2);
-    bank.addCustomer(customer_3);
 
-    bank.createCustomerAccount(customer_1.getCustomerId(), AccountType.CHECKING, Currency.MDL);
-    bank.createCustomerAccount(customer_1.getCustomerId(), AccountType.SAVINGS, Currency.USD);
+    TopCustomers topCustomers = new TopCustomers();
+    topCustomers.createTopCustomers();
 
-    bank.createCustomerAccount(customer_2.getCustomerId(), AccountType.CHECKING, Currency.MDL);
-    bank.createCustomerAccount(customer_2.getCustomerId(), AccountType.SAVINGS, Currency.EUR);
+    OfferManager offerManager = new OfferManager();
 
-    bank.createCustomerAccount(customer_3.getCustomerId(), AccountType.CHECKING, Currency.MDL);
-    bank.createCustomerAccount(customer_3.getCustomerId(), AccountType.SAVINGS, Currency.USD);
+    offerManager.addOfferPrototype("discount10", new DiscountOffer("10% Discount on Loans"));
+    offerManager.addOfferPrototype("bonus1000", new BonusPointsOffer(1000));
+    offerManager.addOfferPrototype("loanMIL", new LoanOffer(1000000, Currency.USD));
+
+    for (Customer customer : bank.getAllCustomers()) {
+      Offer discountOffer = offerManager.getOfferClone("discount10");
+      Offer bonusOffer = offerManager.getOfferClone("bonus1000");
+      Offer loanOffer = offerManager.getOfferClone("loanMIL");
+
+      if (customer instanceof CustomerRegular) {
+        customer.addNotification(new OfferNotification(discountOffer.toString()));
+      } else if (customer instanceof CustomerPremium) {
+        customer.addNotification(new OfferNotification(bonusOffer.toString()));
+      } else if (customer instanceof CustomerVIP) {
+        customer.addNotification(new OfferNotification(loanOffer.toString()));
+      }
+    }
 
     while (true) {
       System.out.println("===== Select Mode =====");
@@ -46,7 +78,7 @@ public class Main {
     }
   }
 
-  private static void handleBankMode(CustomerManagement bank) {
+  private static void handleBankMode(CustomerManager bank) {
     while (true) {
       System.out.println(">>>>> Bank Mode <<<<<");
       System.out.println("1. See ALL customers");
@@ -54,7 +86,8 @@ public class Main {
       System.out.println("3. Create a customer");
       System.out.println("4. Remove a customer");
       System.out.println("5. Create an account for a customer");
-      System.out.println("6. Back to main menu");
+      System.out.println("6. Send security notification to all customers");
+      System.out.println("7. Back to main menu");
       System.out.print("Enter your choice: ");
       int bankChoice = Main.scanner.nextInt();
 
@@ -68,7 +101,8 @@ public class Main {
         case 3 -> createCustomer(bank);
         case 4 -> removeCustomer(bank);
         case 5 -> createAccount(bank);
-        case 6 -> {
+        case 6 -> sendNotification();
+        case 7 -> {
           System.out.println("Back to main menu...");
           return;
         }
@@ -77,7 +111,7 @@ public class Main {
     }
   }
 
-  private static void handleCustomerMode(CustomerManagement bank) {
+  private static void handleCustomerMode(CustomerManager bank) {
     System.out.print("Enter your Customer ID: ");
     int customerId = Main.scanner.nextInt();
 
@@ -112,7 +146,7 @@ public class Main {
     }
   }
 
-  private static void seeOneCustomer(CustomerManagement bank) {
+  private static void seeOneCustomer(CustomerManager bank) {
     System.out.print("Enter the Customer ID to see: ");
     int customerIdToSee = Main.scanner.nextInt();
 
@@ -125,7 +159,7 @@ public class Main {
     }
   }
 
-  private static void createCustomer(CustomerManagement bank) {
+  private static void createCustomer(CustomerManager bank) {
     System.out.print("Enter the customer type (regular/premium/vip): ");
     // Consume next line
     Main.scanner.nextLine();
@@ -134,7 +168,7 @@ public class Main {
     bank.createCustomer(customerType);
   }
 
-  private static void removeCustomer(CustomerManagement bank) {
+  private static void removeCustomer(CustomerManager bank) {
     System.out.print("Enter the Customer ID to remove: ");
     int customerIdToRemove = Main.scanner.nextInt();
 
@@ -145,7 +179,7 @@ public class Main {
     }
   }
 
-  private static void createAccount(CustomerManagement bank) {
+  private static void createAccount(CustomerManager bank) {
     System.out.print("Enter the Customer ID to add an account: ");
     int customerIdAccount = Main.scanner.nextInt();
     Main.scanner.nextLine(); // Consume the newline character
@@ -169,6 +203,13 @@ public class Main {
     bank.createCustomerAccount(customerIdAccount, accountType, currency);
   }
 
+  private static void sendNotification() {
+    System.out.print("Enter the message to send: ");
+    Main.scanner.nextLine(); // Consume the newline character
+    String message = Main.scanner.nextLine();
+    Notification securityNotification = new SecurityNotification(message);
+    securityNotification.send();
+  }
 
   private static void viewOneAccount(Customer customer) {
     System.out.print("Enter the account number: ");
