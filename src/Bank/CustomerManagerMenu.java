@@ -8,11 +8,11 @@ import Notification.SecurityNotification;
 
 import java.util.Scanner;
 
-public class CustomerManagerFacade {
+public class CustomerManagerMenu {
   private CustomerManager customerManager;
   private Scanner scanner;
 
-  public CustomerManagerFacade(CustomerManager customerManager) {
+  public CustomerManagerMenu(CustomerManager customerManager) {
     this.customerManager = customerManager;
     this.scanner = new Scanner(System.in);
   }

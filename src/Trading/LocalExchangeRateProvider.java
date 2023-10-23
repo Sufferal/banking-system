@@ -1,4 +1,4 @@
-package ExchangeRate;
+package Trading;
 
 import Bank.Currency;
 

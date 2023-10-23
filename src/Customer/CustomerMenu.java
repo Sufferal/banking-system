@@ -3,17 +3,18 @@
   import Account.Account;
   import Bank.Currency;
   import Bank.CustomerManager;
+  import Trading.ForexFacade;
   import Transaction.Payment.*;
   import Transaction.Transaction;
 
   import java.time.Instant;
   import java.util.Scanner;
 
-  public class CustomerFacade {
+  public class CustomerMenu {
     private CustomerManager customerManager;
     private Scanner scanner;
 
-    public CustomerFacade(CustomerManager customerManager) {
+    public CustomerMenu(CustomerManager customerManager) {
       this.customerManager = customerManager;
       this.scanner = new Scanner(System.in);
     }
@@ -65,22 +66,24 @@
           System.out.println("1. Deposit");
           System.out.println("2. Withdraw");
           System.out.println("3. Payments");
-          System.out.println("4. See current balance");
-          System.out.println("5. See transactions ");
-          System.out.println("6. Back to customer mode ");
+          System.out.println("4. Trade");
+          System.out.println("5. See current balance");
+          System.out.println("6. See transactions ");
+          System.out.println("7. Back to customer mode ");
           System.out.print("Enter your choice: ");
           int optionChoice = scanner.nextInt();
           switch (optionChoice) {
             case 1 -> depositFunds(customer, currentAccount);
             case 2 -> withdrawFunds(customer, currentAccount);
             case 3 -> handlePayments(customer, currentAccount);
-            case 4 -> System.out.println(currentAccount);
-            case 5 -> {
+            case 4 -> handleTrade(customer, currentAccount);
+            case 5 -> System.out.println(currentAccount);
+            case 6 -> {
               for (Transaction transaction : currentAccount.getTransactionHistory()) {
                 System.out.println(transaction);
               }
             }
-            case 6 -> {
+            case 7 -> {
               break operationsLoop;
             }
             default -> {
@@ -192,5 +195,17 @@
       }
 
       System.out.println(billType + " has been paid/purchased.");
+    }
+
+    private void handleTrade(Customer customer, Account currentAccount) {
+      ForexFacade facade = new ForexFacade();
+
+      // Currency exchange
+      double convertedAmount = facade.exchangeCurrency("USD", "EUR", 1000);
+      System.out.println("Converted amount: " + convertedAmount + " EUR");
+
+      // Forex trade
+      String tradeConfirmation = facade.executeForexTrade("USD/EUR", 10000, "Market");
+      System.out.println("Trade confirmation: " + tradeConfirmation);
     }
   }

@@ -1,8 +1,8 @@
 package Account;
 
 import Bank.Currency;
-import ExchangeRate.ExchangeRateProvider;
-import ExchangeRate.LocalExchangeRateProvider;
+import Trading.ExchangeRateProvider;
+import Trading.LocalExchangeRateProvider;
 import Transaction.*;
 import Transaction.Payment.PaymentType;
 
