@@ -4,6 +4,7 @@ import Bank.Currency;
 import ExchangeRate.ExchangeRateProvider;
 import ExchangeRate.LocalExchangeRateProvider;
 import Transaction.*;
+import Transaction.Payment.PaymentType;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -12,18 +13,29 @@ import java.util.Random;
 
 public abstract class Account implements AccountManagement  {
   private String accountNumber;
+  private PaymentType paymentType;
   private double balance;
   private Currency currency;
   private List<Transaction> transactionHistory;
 
   public Account(double balance, Currency currency) {
     this.accountNumber = this.generateAccountNumber();
+    this.paymentType = PaymentType.MODERN;
+    this.balance = balance;
+    this.currency = currency;
+    this.transactionHistory = new ArrayList<>();
+  }
+
+  public Account(double balance, Currency currency, PaymentType paymentType) {
+    this.accountNumber = this.generateAccountNumber();
+    this.paymentType = paymentType;
     this.balance = balance;
     this.currency = currency;
     this.transactionHistory = new ArrayList<>();
   }
 
   public String getAccountNumber() { return this.accountNumber; }
+  public PaymentType getPaymentType() { return this.paymentType; }
   public double getBalance() { return this.balance; }
   public Currency getCurrency() { return this.currency; }
   public List<Transaction> getTransactionHistory() { return this.transactionHistory; }

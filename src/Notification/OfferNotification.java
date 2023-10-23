@@ -1,9 +1,6 @@
 package Notification;
 
-import Bank.CustomerManager;
 import Customer.Customer;
-
-import java.util.List;
 
 public class OfferNotification implements Notification {
   private String message;
@@ -18,7 +15,7 @@ public class OfferNotification implements Notification {
   }
 
   @Override
-  public void send() {
-
+  public void send(Customer customer) {
+    customer.addNotification(this);
   }
 }

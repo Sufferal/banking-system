@@ -2,6 +2,7 @@ import Account.*;
 import Bank.*;
 import Customer.*;
 import Notification.*;
+import Transaction.Payment.*;
 
 import java.util.Scanner;
 
@@ -13,14 +14,14 @@ public class Main {
     CustomerRegular.Builder builder = new CustomerRegular.Builder(1);
     Customer customer_1 = builder.setFirstName("Radagon").setLastName("Beast").setAge(25)
       .setAddress("Str. Mihai Eminescu, 1, Chișinău, Moldova").setPhone("+373 79 000 000")
-      .addAccount(new CheckingAccount(12.57, Currency.MDL))
+      .addAccount(new CheckingAccount(12.57, Currency.MDL, PaymentType.LEGACY))
       .addAccount(new SavingsAccount(198, Currency.EUR))
       .build();
 
     CustomerPremium.Builder builder2 = new CustomerPremium.Builder(2);
     Customer customer_2 = builder2.setFirstName("Vasile").setLastName("Ciobanu").setPhone("+373 79 000 001")
       .addAccount(new CheckingAccount(134, Currency.USD))
-      .addAccount(new SavingsAccount(953, Currency.EUR))
+      .addAccount(new SavingsAccount(953, Currency.EUR, PaymentType.LEGACY))
       .addNotification(new SecurityNotification("Your account has been hacked :("))
       .build();
 

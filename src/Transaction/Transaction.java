@@ -23,6 +23,15 @@ public class Transaction {
     this.timestamp = timestamp;
   }
 
+  public Transaction() {
+    this.transactionId = getNextTransactionId();
+    this.fromAccountNumber = "";
+    this.toAccountNumber = "";
+    this.amount = 0;
+    this.currency = Currency.USD;
+    this.timestamp = Instant.now();
+  }
+
   private synchronized static int getNextTransactionId() {
     return ++lastTransactionId;
   }
@@ -47,5 +56,29 @@ public class Transaction {
   public String toString() {
     return "(Transaction) #" + transactionId + " from Account " + fromAccountNumber + " to Account " + toAccountNumber +
         ": " + amount + " " + currency + " at " + timestamp;
+  }
+
+  public void commit() {
+    System.out.println("Transaction #" + transactionId + " committed.");
+  }
+
+  public void rollback() {
+    System.out.println("Transaction #" + transactionId + " rolled back.");
+  }
+
+  public void setFromAccountNumber(String fromAccountNumber) {
+    this.fromAccountNumber = fromAccountNumber;
+  }
+
+  public void setToAccountNumber(String toAccountNumber) {
+    this.toAccountNumber = toAccountNumber;
+  }
+
+  public void setAmount(double totalAmount) {
+    this.amount = totalAmount;
+  }
+
+  public void setCurrency(Currency currency) {
+    this.currency = currency;
   }
 }

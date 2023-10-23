@@ -111,7 +111,9 @@ public class CustomerManagerFacade {
     System.out.print("Enter the message to send: ");
     scanner.nextLine(); // Consume the newline character
     String message = scanner.nextLine();
-    Notification securityNotification = new SecurityNotification(message, CustomerManager.getInstance().getAllCustomers());
-    securityNotification.send();
+    Notification securityNotification = new SecurityNotification(message);
+    for (Customer customer : this.customerManager.getAllCustomers()) {
+      securityNotification.send(customer);
+    }
   }
 }
