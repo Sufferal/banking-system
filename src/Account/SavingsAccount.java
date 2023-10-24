@@ -1,9 +1,10 @@
 package Account;
 
+import Account.Decorator.AccountAction;
 import Bank.Currency;
 import Transaction.Payment.PaymentType;
 
-public class SavingsAccount extends Account {
+public class SavingsAccount extends Account implements AccountAction {
   private double interestRate;
 
   public SavingsAccount(double balance, Currency currency) {
@@ -35,5 +36,9 @@ public class SavingsAccount extends Account {
         ", paymentType=" + this.getPaymentType() +
         ", interestRate=" + this.interestRate +
         ')';
+  }
+
+  public Account execute() {
+    return this;
   }
 }

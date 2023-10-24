@@ -1,4 +1,8 @@
 import Account.*;
+import Account.Decorator.AccountAction;
+import Account.Decorator.AlertDecorator;
+import Account.Decorator.FeeDecorator;
+import Account.Decorator.OverdraftProtectionDecorator;
 import Bank.*;
 import Customer.*;
 import Notification.*;
@@ -48,17 +52,6 @@ public class Main {
         case 3 -> {
           System.out.println("Exiting the program...");
           return;
-        }
-        case 4 -> {
-          ForexFacade facade = new ForexFacade();
-
-          // Currency exchange
-          double convertedAmount = facade.exchangeCurrency("USD", "EUR", 1000);
-          System.out.println("Converted amount: " + convertedAmount + " EUR");
-
-          // Forex trade
-          String tradeConfirmation = facade.executeForexTrade("USD/EUR", 10000, "Market");
-          System.out.println("Trade confirmation: " + tradeConfirmation);
         }
         default -> System.out.println("Invalid choice. Please try again.");
       }

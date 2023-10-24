@@ -1,6 +1,11 @@
 package Bank;
 
 import Account.AccountType;
+import Account.Decorator.AccountAction;
+import Account.Decorator.AlertDecorator;
+import Account.Decorator.FeeDecorator;
+import Account.Decorator.OverdraftProtectionDecorator;
+import Account.SavingsAccount;
 import Customer.Customer;
 import Customer.CustomerType;
 import Notification.Notification;
@@ -26,7 +31,8 @@ public class CustomerManagerMenu {
       System.out.println("4. Remove a customer");
       System.out.println("5. Create an account for a customer");
       System.out.println("6. Send security notification to all customers");
-      System.out.println("7. Back to main menu");
+      System.out.println("7. Test overdraft protection");
+      System.out.println("8. Back to main menu");
       System.out.print("Enter your choice: ");
       int customerManagerChoice = scanner.nextInt();
 
@@ -41,7 +47,8 @@ public class CustomerManagerMenu {
         case 4 -> removeCustomer();
         case 5 -> createAccount();
         case 6 -> sendNotification();
-        case 7 -> {
+        case 7 -> testOverdraftProtection();
+        case 8 -> {
           System.out.println("Back to main menu...");
           return;
         }
@@ -115,5 +122,13 @@ public class CustomerManagerMenu {
     for (Customer customer : this.customerManager.getAllCustomers()) {
       securityNotification.send(customer);
     }
+  }
+
+  private void testOverdraftProtection() {
+    AccountAction savingsAccount = new SavingsAccount(10, Currency.EUR);
+    AccountAction account = new AlertDecorator(new OverdraftProtectionDecorator(new FeeDecorator(savingsAccount)));
+    System.out.println(savingsAccount);
+    account.execute();
+    System.out.println(savingsAccount);
   }
 }
