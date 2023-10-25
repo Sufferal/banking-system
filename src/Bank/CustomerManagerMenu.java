@@ -32,7 +32,8 @@ public class CustomerManagerMenu {
       System.out.println("5. Create an account for a customer");
       System.out.println("6. Send security notification to all customers");
       System.out.println("7. Test overdraft protection");
-      System.out.println("8. Back to main menu");
+      System.out.println("8. Create managers");
+      System.out.println("9. Back to main menu");
       System.out.print("Enter your choice: ");
       int customerManagerChoice = scanner.nextInt();
 
@@ -48,7 +49,8 @@ public class CustomerManagerMenu {
         case 5 -> createAccount();
         case 6 -> sendNotification();
         case 7 -> testOverdraftProtection();
-        case 8 -> {
+        case 8 -> createManagers();
+        case 9 -> {
           System.out.println("Back to main menu...");
           return;
         }
@@ -130,5 +132,18 @@ public class CustomerManagerMenu {
     System.out.println(savingsAccount);
     account.execute();
     System.out.println(savingsAccount);
+  }
+
+  private void createManagers() {
+    Manager manager1 = new ManagerProxy(this.customerManager, 1);
+    Manager manager2 = new ManagerProxy(this.customerManager, 2);
+    Manager manager3 = new ManagerProxy(this.customerManager, 3);
+
+    System.out.println("Manager 1 status: ");
+    manager1.getAllCustomers();
+    System.out.println("Manager 2 status: ");
+    manager2.getAllCustomers();
+    System.out.println("Manager 3 status: ");
+    manager3.getAllCustomers();
   }
 }
