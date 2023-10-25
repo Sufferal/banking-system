@@ -1,4 +1,4 @@
-# Topic: Creational Design Patterns
+# Topic: Structural Design Patterns
 
 ### Course: Software Design Techniques and Mechanisms
 ### Author: Botnari Ciprian
