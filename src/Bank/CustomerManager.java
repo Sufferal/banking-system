@@ -8,7 +8,7 @@ import Customer.CustomerType;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerManager {
+public class CustomerManager implements Manager {
   private static CustomerManager instance;
   private List<Customer> customers;
 
@@ -24,14 +24,17 @@ public class CustomerManager {
     return instance;
   }
 
+  @Override
   public List<Customer> getAllCustomers() {
     return this.customers;
   }
 
+  @Override
   public void addCustomer(Customer customer) {
     this.customers.add(customer);
   }
 
+  @Override
   public boolean removeCustomer(int customerIdToRemove) {
     for (Customer customer : customers) {
       if (customer.getCustomerId() == customerIdToRemove) {
@@ -42,6 +45,7 @@ public class CustomerManager {
     return false;
   }
 
+  @Override
   public void createCustomer(CustomerType customerType) {
     Customer customer = customerType.createCustomerFromInput();
 
@@ -54,6 +58,7 @@ public class CustomerManager {
     System.out.println("Customer creation failed.");
   }
 
+  @Override
   public Customer getCustomerById(int customerId) {
     for (Customer customer : customers) {
       if (customer.getCustomerId() == customerId) {
@@ -63,6 +68,7 @@ public class CustomerManager {
     return null;
   }
 
+  @Override
   public void createCustomerAccount(int customerId, AccountType accountType, Currency currency) {
     Customer customerToAddAccount = null;
 

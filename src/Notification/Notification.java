@@ -1,5 +1,6 @@
 package Notification;
+import Customer.Customer;
 
 public interface Notification {
-  void send();
+  void send(Customer customer);
 }

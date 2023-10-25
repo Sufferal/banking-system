@@ -1,4 +1,4 @@
-package ExchangeRate;
+package Trading;
 
 import Bank.Currency;
 
@@ -13,6 +13,8 @@ public class LocalExchangeRateProvider implements ExchangeRateProvider {
     exchangeRates = new HashMap<>();
     exchangeRates.put("USD-MDL", 0.056);
     exchangeRates.put("MDL-USD", 17.92);
+    exchangeRates.put("EUR-MDL", 0.052);
+    exchangeRates.put("MDL-EUR", 19.31);
     exchangeRates.put("USD-EUR", 1.07);
     exchangeRates.put("EUR-USD", 0.94);
   }
