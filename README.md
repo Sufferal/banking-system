@@ -13,9 +13,18 @@ A set of five object-oriented design principles intended to make software design
 
 ### Creational Design Patterns
 A category of design patterns that focus on the process of object creation. They provide a way to create objects in a flexible and controlled manner, while decoupling the client code from the specifics of object creation. Creational design patterns address common problems encountered in object creation, such as how to create objects with different initialization parameters, how to create objects based on certain conditions, or how to ensure that only a single instance of an object is created. 
+
 I used the following creational design patterns in this project:
 * Singleton
 * Factory Method
 * Builder
 * Prototype
 
+### Structural Design Patterns
+A category of design patterns that focus on the composition of classes and objects to form larger structures and systems. They provide a way to organize objects and classes in a way that is both flexible and efficient, while allowing for the reuse and modification of existing code. Structural design patterns address common problems encountered in the composition of classes and objects, such as how to create new objects that inherit functionality from existing objects, how to create objects that share functionality without duplicating code, or how to define relationships between objects in a flexible and extensible way.
+
+I used the following structural design patterns in this project:
+* Facade
+* Adapter
+* Decorator
+* Proxy
