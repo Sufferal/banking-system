@@ -4,6 +4,8 @@ import Account.Account;
 import Account.AccountType;
 import Customer.Customer;
 import Customer.CustomerType;
+import Utils.CustomerIterator;
+import Utils.Iterator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,12 +38,16 @@ public class CustomerManager implements Manager {
 
   @Override
   public boolean removeCustomer(int customerIdToRemove) {
-    for (Customer customer : customers) {
+    Iterator customerIterator = this.createIterator();
+
+    while (customerIterator.hasNext()) {
+      Customer customer = (Customer) customerIterator.next();
       if (customer.getCustomerId() == customerIdToRemove) {
         customers.remove(customer);
         return true;
       }
     }
+
     return false;
   }
 
@@ -60,7 +66,10 @@ public class CustomerManager implements Manager {
 
   @Override
   public Customer getCustomerById(int customerId) {
-    for (Customer customer : customers) {
+    Iterator customerIterator = this.createIterator();
+
+    while (customerIterator.hasNext()) {
+      Customer customer = (Customer) customerIterator.next();
       if (customer.getCustomerId() == customerId) {
         return customer;
       }
@@ -72,7 +81,10 @@ public class CustomerManager implements Manager {
   public void createCustomerAccount(int customerId, AccountType accountType, Currency currency) {
     Customer customerToAddAccount = null;
 
-    for (Customer customer : customers) {
+    Iterator customerIterator = this.createIterator();
+
+    while (customerIterator.hasNext()) {
+      Customer customer = (Customer) customerIterator.next();
       if (customer.getCustomerId() == customerId) {
         customerToAddAccount = customer;
         break;
@@ -88,6 +100,11 @@ public class CustomerManager implements Manager {
     Currency accountCurrency = currency == null ? Currency.MDL : currency;
     newAccount = accountType.createAccount(100, accountCurrency);
     customerToAddAccount.addAccount(newAccount);
+  }
+
+  @Override
+  public Iterator createIterator() {
+    return new CustomerIterator(this.customers);
   }
 
   @Override

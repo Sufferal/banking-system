@@ -10,6 +10,7 @@ import Customer.Customer;
 import Customer.CustomerType;
 import Notification.Notification;
 import Notification.SecurityNotification;
+import Utils.Iterator;
 
 import java.util.Scanner;
 
@@ -38,11 +39,7 @@ public class CustomerManagerMenu {
       int customerManagerChoice = scanner.nextInt();
 
       switch (customerManagerChoice) {
-        case 1 -> {
-          for (Customer c : this.customerManager.getAllCustomers()) {
-            System.out.println(c);
-          }
-        }
+        case 1 -> printAllCustomers();
         case 2 -> seeOneCustomer();
         case 3 -> createCustomer();
         case 4 -> removeCustomer();
@@ -56,6 +53,14 @@ public class CustomerManagerMenu {
         }
         default -> System.out.println("Invalid choice. Please try again.");
       }
+    }
+  }
+
+  private void printAllCustomers() {
+    Iterator customerIterator = this.customerManager.createIterator();
+    while (customerIterator.hasNext()) {
+      Customer customer = (Customer) customerIterator.next();
+      System.out.println(customer);
     }
   }
 
@@ -121,7 +126,10 @@ public class CustomerManagerMenu {
     scanner.nextLine(); // Consume the newline character
     String message = scanner.nextLine();
     Notification securityNotification = new SecurityNotification(message);
-    for (Customer customer : this.customerManager.getAllCustomers()) {
+    Iterator customerIterator = this.customerManager.createIterator();
+
+    while (customerIterator.hasNext()) {
+      Customer customer = (Customer) customerIterator.next();
       securityNotification.send(customer);
     }
   }

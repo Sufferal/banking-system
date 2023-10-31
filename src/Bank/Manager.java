@@ -3,6 +3,7 @@ package Bank;
 import Account.AccountType;
 import Customer.Customer;
 import Customer.CustomerType;
+import Utils.Iterator;
 
 import java.util.List;
 
@@ -13,4 +14,5 @@ public interface Manager {
   void createCustomer(CustomerType customerType);
   Customer getCustomerById(int customerId);
   void createCustomerAccount(int customerId, AccountType accountType, Currency currency);
+  Iterator createIterator();
 }

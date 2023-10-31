@@ -3,6 +3,7 @@ package Bank;
 import Account.AccountType;
 import Customer.Customer;
 import Customer.CustomerType;
+import Utils.Iterator;
 
 import java.util.List;
 
@@ -20,6 +21,16 @@ public class ManagerProxy implements Manager {
   public List<Customer> getAllCustomers() {
     if (this.userAccessLevel == 1) {
       return this.realManager.getAllCustomers();
+    } else {
+      System.out.println("[Access denied] You do not have the privileges to use this method.");
+      return null;
+    }
+  }
+
+  @Override
+  public Iterator createIterator() {
+    if (this.userAccessLevel == 1) {
+      return this.realManager.createIterator();
     } else {
       System.out.println("[Access denied] You do not have the privileges to use this method.");
       return null;
