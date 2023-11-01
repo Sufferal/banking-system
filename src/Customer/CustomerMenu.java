@@ -6,6 +6,8 @@
   import Trading.ForexFacade;
   import Transaction.Payment.*;
   import Transaction.Transaction;
+  import Utils.Strategy.AuthenticationContext;
+  import Utils.Strategy.PINAuthentication;
 
   import java.time.Instant;
   import java.util.Scanner;
@@ -30,7 +32,10 @@
         return;
       }
 
-      while (true) {
+      AuthenticationContext authenticationContext = new AuthenticationContext(new PINAuthentication(customer.getPIN()));
+      boolean isAuthenticated = authenticationContext.authenticate();
+
+      while (isAuthenticated) {
         System.out.println("##### Customer Mode ######");
         System.out.println("1. View ALL your accounts");
         System.out.println("2. Select an account");

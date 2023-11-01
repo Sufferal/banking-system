@@ -10,7 +10,10 @@ import Customer.Customer;
 import Customer.CustomerType;
 import Notification.Notification;
 import Notification.SecurityNotification;
-import Utils.Iterator;
+import Utils.Iterator.Iterator;
+import Utils.Strategy.AuthenticationContext;
+import Utils.Strategy.FaceAuthentication;
+import Utils.Strategy.FingerprintAuthentication;
 
 import java.util.Scanner;
 
@@ -34,7 +37,8 @@ public class CustomerManagerMenu {
       System.out.println("6. Send security notification to all customers");
       System.out.println("7. Test overdraft protection");
       System.out.println("8. Create managers");
-      System.out.println("9. Back to main menu");
+      System.out.println("9. Test authentications");
+      System.out.println("10. Back to main menu");
       System.out.print("Enter your choice: ");
       int customerManagerChoice = scanner.nextInt();
 
@@ -47,7 +51,8 @@ public class CustomerManagerMenu {
         case 6 -> sendNotification();
         case 7 -> testOverdraftProtection();
         case 8 -> createManagers();
-        case 9 -> {
+        case 9 -> testAuthentications();
+        case 10 -> {
           System.out.println("Back to main menu...");
           return;
         }
@@ -140,6 +145,18 @@ public class CustomerManagerMenu {
     System.out.println(savingsAccount);
     account.execute();
     System.out.println(savingsAccount);
+  }
+
+  private void testAuthentications() {
+    AuthenticationContext authenticationContext = new AuthenticationContext(
+      new FaceAuthentication("src/Utils/Strategy/img/face_test.jpg"));
+    System.out.println(authenticationContext.authenticate());
+    authenticationContext.setAuthentication(new FingerprintAuthentication(new int[][]{
+      {1, 2, 3},
+      {4, 5, 6},
+      {7, 8, 9}
+    }));
+    System.out.println(authenticationContext.authenticate());
   }
 
   private void createManagers() {

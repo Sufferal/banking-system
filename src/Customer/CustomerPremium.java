@@ -13,6 +13,7 @@ public class CustomerPremium implements Customer {
   private String firstName;
   private String lastName;
   private String phone;
+  private String pin;
   private List<Account> accounts;
   private List<Notification> notifications;
   private List<Offer> offers;
@@ -22,6 +23,7 @@ public class CustomerPremium implements Customer {
     this.firstName = firstName;
     this.lastName = lastName;
     this.phone = phone;
+    this.pin = "5678";
     this.accounts = new ArrayList<Account>();
     this.notifications = new ArrayList<Notification>();
   }
@@ -32,12 +34,18 @@ public class CustomerPremium implements Customer {
     this.firstName = firstName;
     this.lastName = lastName;
     this.phone = phone;
+    this.pin = "5678";
     this.accounts = accounts;
     this.notifications = notifications;
   }
 
   @Override
   public int getCustomerId() { return this.customerId; }
+
+  @Override
+  public String getPIN() {
+    return this.pin;
+  }
 
   @Override
   public void addNotification(Notification notification) {

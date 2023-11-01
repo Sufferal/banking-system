@@ -4,8 +4,8 @@ import Account.Account;
 import Account.AccountType;
 import Customer.Customer;
 import Customer.CustomerType;
-import Utils.CustomerIterator;
-import Utils.Iterator;
+import Utils.Iterator.CustomerIterator;
+import Utils.Iterator.Iterator;
 
 import java.util.ArrayList;
 import java.util.List;

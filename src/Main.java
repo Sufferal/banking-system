@@ -1,12 +1,7 @@
 import Account.*;
-import Account.Decorator.AccountAction;
-import Account.Decorator.AlertDecorator;
-import Account.Decorator.FeeDecorator;
-import Account.Decorator.OverdraftProtectionDecorator;
 import Bank.*;
 import Customer.*;
 import Notification.*;
-import Trading.ForexFacade;
 import Transaction.Payment.*;
 
 import java.util.Scanner;
@@ -43,8 +38,8 @@ public class Main {
       System.out.println("3. Exit");
       System.out.print("Enter your choice: ");
       int modeChoice = scanner.nextInt();
-      CustomerMenu customerMenu = new CustomerMenu(bank);
       CustomerManagerMenu customerManagerMenu = new CustomerManagerMenu(bank);
+      CustomerMenu customerMenu = new CustomerMenu(bank);
 
       switch (modeChoice) {
         case 1 -> customerManagerMenu.startMenu();
