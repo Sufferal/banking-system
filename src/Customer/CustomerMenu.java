@@ -6,8 +6,8 @@
   import Trading.ForexFacade;
   import Transaction.Payment.*;
   import Transaction.Transaction;
-  import Utils.Strategy.AuthenticationContext;
-  import Utils.Strategy.PINAuthentication;
+  import Customer.Strategy.AuthenticationContext;
+  import Customer.Strategy.PINAuthentication;
 
   import java.time.Instant;
   import java.util.Scanner;
@@ -32,8 +32,14 @@
         return;
       }
 
-      AuthenticationContext authenticationContext = new AuthenticationContext(new PINAuthentication(customer.getPIN()));
-      boolean isAuthenticated = authenticationContext.authenticate();
+      boolean isAuthenticated = false;
+      int attempts = 0;
+
+      do {
+        AuthenticationContext authenticationContext = new AuthenticationContext(new PINAuthentication(customer.getPIN()));
+        isAuthenticated = authenticationContext.authenticate();
+        attempts++;
+      } while (!isAuthenticated && attempts < 3);
 
       while (isAuthenticated) {
         System.out.println("##### Customer Mode ######");

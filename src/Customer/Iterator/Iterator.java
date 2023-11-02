@@ -1,4 +1,4 @@
-package Utils.Iterator;
+package Customer.Iterator;
 
 public interface Iterator {
   boolean hasNext();

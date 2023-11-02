@@ -1,7 +1,9 @@
 import Account.*;
 import Bank.*;
 import Customer.*;
+import Customer.Iterator.Iterator;
 import Notification.*;
+import Offer.Offer;
 import Transaction.Payment.*;
 
 import java.util.Scanner;
@@ -25,8 +27,8 @@ public class Main {
       .addNotification(new SecurityNotification("Your account has been hacked :("))
       .build();
 
-    bank.addCustomer(customer_1);
-    bank.addCustomer(customer_2);
+    bank.addCustomer(customer_1); bank.registerObserver(customer_1);
+    bank.addCustomer(customer_2); bank.registerObserver(customer_2);
 
     TopCustomers topCustomers = new TopCustomers();
     topCustomers.createTopCustomers();

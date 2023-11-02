@@ -3,7 +3,9 @@ package Bank;
 import Account.AccountType;
 import Customer.Customer;
 import Customer.CustomerType;
-import Utils.Iterator.Iterator;
+import Customer.Iterator.Iterator;
+import Offer.Offer;
+import Offer.OfferObserver;
 
 import java.util.List;
 
@@ -34,6 +36,33 @@ public class ManagerProxy implements Manager {
     } else {
       System.out.println("[Access denied] You do not have the privileges to use this method.");
       return null;
+    }
+  }
+
+  @Override
+  public void registerObserver(OfferObserver observer) {
+    if (this.userAccessLevel < 3) {
+      this.realManager.registerObserver(observer);
+    } else {
+      System.out.println("[Access denied] You do not have the privileges to use this method.");
+    }
+  }
+
+  @Override
+  public void removeObserver(OfferObserver observer) {
+    if (this.userAccessLevel < 3) {
+      this.realManager.removeObserver(observer);
+    } else {
+      System.out.println("[Access denied] You do not have the privileges to use this method.");
+    }
+  }
+
+  @Override
+  public void notifyObservers(Offer offer) {
+    if (this.userAccessLevel < 3) {
+      this.realManager.notifyObservers(offer);
+    } else {
+      System.out.println("[Access denied] You do not have the privileges to use this method.");
     }
   }
 

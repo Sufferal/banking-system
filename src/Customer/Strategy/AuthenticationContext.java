@@ -1,4 +1,4 @@
-package Utils.Strategy;
+package Customer.Strategy;
 
 public class AuthenticationContext {
   private Authentication authentication;

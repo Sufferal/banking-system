@@ -4,8 +4,10 @@ import Account.Account;
 import Account.AccountType;
 import Customer.Customer;
 import Customer.CustomerType;
-import Utils.Iterator.CustomerIterator;
-import Utils.Iterator.Iterator;
+import Customer.Iterator.CustomerIterator;
+import Customer.Iterator.Iterator;
+import Offer.Offer;
+import Offer.OfferObserver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,10 +15,14 @@ import java.util.List;
 public class CustomerManager implements Manager {
   private static CustomerManager instance;
   private List<Customer> customers;
+  private List<OfferObserver> offerObservers;
+  private List<Offer> offers;
 
   // Private constructor to prevent external instantiation
   private CustomerManager() {
     this.customers = new ArrayList<>();
+    this.offerObservers = new ArrayList<>();
+    this.offers = new ArrayList<>();
   }
 
   public static synchronized CustomerManager getInstance() {
@@ -111,5 +117,27 @@ public class CustomerManager implements Manager {
   public String toString() {
     return "There are "  + this.customers.size() + " customers" +
         "\n" + this.customers;
+  }
+
+  @Override
+  public void registerObserver(OfferObserver observer) {
+    this.offerObservers.add(observer);
+  }
+
+  @Override
+  public void removeObserver(OfferObserver observer) {
+    this.offerObservers.remove(observer);
+  }
+
+  @Override
+  public void notifyObservers(Offer offer) {
+    for (OfferObserver observer : this.offerObservers) {
+      observer.update(offer);
+    }
+  }
+
+  public void publishOffer(Offer offer) {
+    this.offers.add(offer);
+    this.notifyObservers(offer);
   }
 }

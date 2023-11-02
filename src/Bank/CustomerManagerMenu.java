@@ -10,10 +10,11 @@ import Customer.Customer;
 import Customer.CustomerType;
 import Notification.Notification;
 import Notification.SecurityNotification;
-import Utils.Iterator.Iterator;
-import Utils.Strategy.AuthenticationContext;
-import Utils.Strategy.FaceAuthentication;
-import Utils.Strategy.FingerprintAuthentication;
+import Offer.Offer;
+import Customer.Iterator.Iterator;
+import Customer.Strategy.AuthenticationContext;
+import Customer.Strategy.FaceAuthentication;
+import Customer.Strategy.FingerprintAuthentication;
 
 import java.util.Scanner;
 
@@ -35,7 +36,7 @@ public class CustomerManagerMenu {
       System.out.println("4. Remove a customer");
       System.out.println("5. Create an account for a customer");
       System.out.println("6. Send security notification to all customers");
-      System.out.println("7. Test overdraft protection");
+      System.out.println("7. Publish an offer");
       System.out.println("8. Create managers");
       System.out.println("9. Test authentications");
       System.out.println("10. Back to main menu");
@@ -49,13 +50,14 @@ public class CustomerManagerMenu {
         case 4 -> removeCustomer();
         case 5 -> createAccount();
         case 6 -> sendNotification();
-        case 7 -> testOverdraftProtection();
+        case 7 -> publishOffer();
         case 8 -> createManagers();
         case 9 -> testAuthentications();
         case 10 -> {
           System.out.println("Back to main menu...");
           return;
         }
+        case 11 -> testOffers();
         default -> System.out.println("Invalid choice. Please try again.");
       }
     }
@@ -137,6 +139,30 @@ public class CustomerManagerMenu {
       Customer customer = (Customer) customerIterator.next();
       securityNotification.send(customer);
     }
+  }
+
+  private void publishOffer() {
+    System.out.print("Enter the message to publish: ");
+    scanner.nextLine(); // Consume the newline character
+    String message = scanner.nextLine();
+    Offer offer = new Offer(message);
+    this.customerManager.publishOffer(offer);
+  }
+
+  private void testOffers() {
+    Customer customer_1 = this.customerManager.getCustomerById(1);
+    Customer customer_2 = this.customerManager.getCustomerById(2);
+
+    Offer interestRateOffer = new Offer("We offer you a 0.5% interest rate for your savings account!");
+    Offer creditOffer = new Offer("We offer you a 5% interest rate for your credit!");
+    this.customerManager.publishOffer(interestRateOffer);
+
+    System.out.println(customer_1); System.out.println(customer_2);
+
+    this.customerManager.removeObserver(customer_1);
+    this.customerManager.publishOffer(creditOffer);
+
+    System.out.println(customer_1); System.out.println(customer_2);
   }
 
   private void testOverdraftProtection() {

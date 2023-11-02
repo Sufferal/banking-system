@@ -1,4 +1,4 @@
-package Utils.Iterator;
+package Customer.Iterator;
 
 import Customer.Customer;
 

@@ -2,6 +2,8 @@ package Customer;
 
 import Account.Account;
 import Notification.Notification;
+import Notification.OfferNotification;
+import Offer.Offer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -98,6 +100,11 @@ public class CustomerRegular implements Customer {
     }
 
     return sb.toString();
+  }
+
+  @Override
+  public void update(Offer offer) {
+    this.notifications.add(new OfferNotification(offer));
   }
 
   // Builder

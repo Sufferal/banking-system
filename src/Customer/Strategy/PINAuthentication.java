@@ -1,4 +1,4 @@
-package Utils.Strategy;
+package Customer.Strategy;
 
 import java.util.Scanner;
 
