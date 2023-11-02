@@ -2,6 +2,8 @@ package Customer;
 
 import Account.Account;
 import Notification.Notification;
+import Notification.OfferNotification;
+import Offer.Offer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,7 @@ public class CustomerRegular implements Customer {
   private int age;
   private String address;
   private String phone;
+  private String pin;
   private List<Account> accounts;
   private List<Notification> notifications;
 
@@ -24,6 +27,7 @@ public class CustomerRegular implements Customer {
     this.age = age;
     this.address = address;
     this.phone = phone;
+    this.pin = "1234";
     this.accounts = new ArrayList<Account>();
     this.notifications = new ArrayList<Notification>();
   }
@@ -37,11 +41,17 @@ public class CustomerRegular implements Customer {
     this.address = address;
     this.phone = phone;
     this.accounts = accounts;
+    this.pin = "1234";
     this.notifications = notifications;
   }
 
   @Override
   public int getCustomerId() { return this.customerId; }
+
+  @Override
+  public String getPIN() {
+    return this.pin;
+  }
 
   @Override
   public void addNotification(Notification notification) {
@@ -90,6 +100,11 @@ public class CustomerRegular implements Customer {
     }
 
     return sb.toString();
+  }
+
+  @Override
+  public void update(Offer offer) {
+    this.notifications.add(new OfferNotification(offer));
   }
 
   // Builder

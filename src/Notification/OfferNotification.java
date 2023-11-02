@@ -1,17 +1,18 @@
 package Notification;
 
 import Customer.Customer;
+import Offer.Offer;
 
 public class OfferNotification implements Notification {
-  private String message;
+  private Offer offer;
 
-  public OfferNotification(String message) {
-    this.message = message;
+  public OfferNotification(Offer offer) {
+    this.offer = offer;
   }
 
   @Override
   public String toString() {
-    return "(Offer notification): " + this.message;
+    return "(Offer notification): " + this.offer.getOfferDetails();
   }
 
   @Override

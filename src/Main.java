@@ -1,12 +1,9 @@
 import Account.*;
-import Account.Decorator.AccountAction;
-import Account.Decorator.AlertDecorator;
-import Account.Decorator.FeeDecorator;
-import Account.Decorator.OverdraftProtectionDecorator;
 import Bank.*;
 import Customer.*;
+import Customer.Iterator.Iterator;
 import Notification.*;
-import Trading.ForexFacade;
+import Offer.Offer;
 import Transaction.Payment.*;
 
 import java.util.Scanner;
@@ -30,8 +27,8 @@ public class Main {
       .addNotification(new SecurityNotification("Your account has been hacked :("))
       .build();
 
-    bank.addCustomer(customer_1);
-    bank.addCustomer(customer_2);
+    bank.addCustomer(customer_1); bank.registerObserver(customer_1);
+    bank.addCustomer(customer_2); bank.registerObserver(customer_2);
 
     TopCustomers topCustomers = new TopCustomers();
     topCustomers.createTopCustomers();
@@ -43,8 +40,8 @@ public class Main {
       System.out.println("3. Exit");
       System.out.print("Enter your choice: ");
       int modeChoice = scanner.nextInt();
-      CustomerMenu customerMenu = new CustomerMenu(bank);
       CustomerManagerMenu customerManagerMenu = new CustomerManagerMenu(bank);
+      CustomerMenu customerMenu = new CustomerMenu(bank);
 
       switch (modeChoice) {
         case 1 -> customerManagerMenu.startMenu();
