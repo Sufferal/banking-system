@@ -32,7 +32,7 @@ public class FaceAuthentication implements Authentication {
 
   private BufferedImage captureFaceImage() {
     try {
-      BufferedImage img = ImageIO.read(new File("src/Utils/Strategy/img/face_test.jpg"));
+      BufferedImage img = ImageIO.read(new File("src/Customer/Strategy/img/face_test.jpg"));
       return img;
     } catch (Exception e) {
       throw new RuntimeException("Error reading image file");

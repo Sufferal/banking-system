@@ -175,7 +175,7 @@ public class CustomerManagerMenu {
 
   private void testAuthentications() {
     AuthenticationContext authenticationContext = new AuthenticationContext(
-      new FaceAuthentication("src/Utils/Strategy/img/face_test.jpg"));
+      new FaceAuthentication("src/Customer/Strategy/img/face.jpg"));
     System.out.println(authenticationContext.authenticate());
     authenticationContext.setAuthentication(new FingerprintAuthentication(new int[][]{
       {1, 2, 3},

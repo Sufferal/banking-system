@@ -28,3 +28,11 @@ I used the following structural design patterns in this project:
 * Adapter
 * Decorator
 * Proxy
+
+### Behavioral Design Patterns
+A category of design patterns that focus on the interaction and communication between objects and classes. They provide a way to organize the behavior of objects in a way that is both flexible and reusable, while separating the responsibilities of objects from the specific implementation details. Behavioral design patterns address common problems encountered in object behavior, such as how to define interactions between objects, how to control the flow of messages between objects, or how to define algorithms and policies that can be reused across different objects and classes.
+
+I used the following behavioral design patterns in this project:
+* Iterator
+* Strategy
+* Observer
